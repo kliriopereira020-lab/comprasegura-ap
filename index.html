@@ -4,161 +4,364 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CompraSegura</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #00C853;
+      --green-dark: #00a846;
+      --green-glow: #00C85320;
+      --bg: #080808;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --text: #ffffff;
+      --text-muted: #555555;
+      --text-dim: #888888;
+      --max-width: 860px;
+      --card-width: 380px;
+    }
+
     body {
-      background: #080808;
-      font-family: 'Syne', sans-serif;
-      color: #fff;
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 32px 16px 80px;
+      padding: 48px 24px 100px;
+      background-image: radial-gradient(ellipse 80% 40% at 50% -10%, #00C85308, transparent);
     }
+
+    /* HERO */
+    .hero {
+      width: 100%;
+      max-width: var(--max-width);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
     .badge {
-      display: inline-flex; align-items: center; gap: 10px;
+      display: inline-flex; align-items: center; gap: 8px;
       background: #111; border: 1px solid #1e1e1e;
-      border-radius: 99px; padding: 6px 16px; margin-bottom: 16px;
+      border-radius: 99px; padding: 6px 16px; margin-bottom: 20px;
       color: #555; font-size: 11px; letter-spacing: 2px; font-weight: 700;
+      font-family: 'Syne', sans-serif;
     }
-    h1 { font-size: 36px; font-weight: 800; line-height: 1.1; text-align: center; }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -1px;
+    }
+
     h1 span {
-      background: linear-gradient(135deg, #00C853, #00e676);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background: linear-gradient(135deg, #00C853, #69f0ae);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .subtitle { color: #444; font-size: 13px; margin-top: 10px; text-align: center; }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 12px;
+      font-weight: 300;
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      width: 100%;
+      max-width: 600px;
+      margin: 32px 0 16px;
+    }
+
     .search-box {
-      width: 100%; max-width: 520px; margin: 28px 0 16px;
       display: flex; gap: 8px;
-      background: #111; border: 1px solid #1e1e1e;
-      border-radius: 14px; padding: 8px 8px 8px 16px;
+      background: #111;
+      border: 1px solid #242424;
+      border-radius: 16px;
+      padding: 8px 8px 8px 20px;
+      transition: border-color 0.2s;
     }
+
+    .search-box:focus-within {
+      border-color: #00C85344;
+      box-shadow: 0 0 0 3px #00C85310;
+    }
+
     input {
       flex: 1; background: none; border: none; outline: none;
-      color: #eee; font-size: 15px; font-family: 'Syne', sans-serif;
+      color: #eee; font-size: 15px; font-family: 'DM Sans', sans-serif;
+      min-width: 0;
     }
-    input::placeholder { color: #444; }
+
+    input::placeholder { color: #383838; }
+
     button.search-btn {
-      padding: 10px 20px; border-radius: 10px; border: none;
+      padding: 11px 24px; border-radius: 10px; border: none;
       background: linear-gradient(135deg, #00C853, #00a846);
       color: #fff; font-size: 13px; font-weight: 700;
       cursor: pointer; font-family: 'Syne', sans-serif;
-      white-space: nowrap;
+      white-space: nowrap; flex-shrink: 0;
+      transition: opacity 0.2s, transform 0.1s;
     }
-    button.search-btn:disabled {
-      background: #1a1a1a; color: #444; cursor: not-allowed;
-    }
+
+    button.search-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    button.search-btn:active { transform: translateY(0); }
+    button.search-btn:disabled { background: #1a1a1a; color: #333; cursor: not-allowed; transform: none; }
+
     .populares {
-      width: 100%; max-width: 520px;
-      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px;
+      display: flex; gap: 6px; flex-wrap: wrap;
+      justify-content: center; margin-top: 12px;
     }
-    .populares span { color: #444; font-size: 11px; align-self: center; }
+
+    .populares span { color: #383838; font-size: 11px; align-self: center; }
+
     .pop-btn {
       background: #111; border: 1px solid #1e1e1e;
-      border-radius: 99px; color: #666; font-size: 11px;
-      padding: 4px 12px; cursor: pointer; font-family: 'Syne', sans-serif;
+      border-radius: 99px; color: #555; font-size: 11px;
+      padding: 5px 14px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s, color 0.2s;
     }
-    .resultados { width: 100%; max-width: 520px; }
-    .produto-titulo { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-    .produto-resumo { color: #555; font-size: 13px; margin-bottom: 20px; }
+
+    .pop-btn:hover { border-color: #00C85344; color: #00C853; }
+
+    /* RESULTS LAYOUT */
+    .resultados {
+      width: 100%;
+      max-width: var(--max-width);
+    }
+
+    .produto-header {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .produto-titulo {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px; font-weight: 800; margin-bottom: 4px;
+    }
+
+    .produto-resumo { color: #444; font-size: 13px; }
+
+    /* CARDS GRID */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
     .card {
-      background: #111; border: 1px solid #1e1e1e;
-      border-radius: 16px; padding: 20px; margin-bottom: 12px;
-      position: relative; transition: all 0.3s;
-      opacity: 0; transform: translateY(20px);
-      animation: fadeIn 0.4s ease forwards;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      position: relative;
+      transition: border-color 0.3s, transform 0.2s;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.4s ease forwards;
     }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #2a2a2a;
+    }
+
     .card.destaque {
-      background: #0f1a0f; border-color: #00C85344;
-      box-shadow: 0 0 30px #00C85312;
+      background: #0d1a0d;
+      border-color: #00C85344;
+      box-shadow: 0 0 40px #00C85310, inset 0 1px 0 #00C85320;
     }
-    @keyframes fadeIn {
+
+    .card.destaque:hover { border-color: #00C853; }
+
+    @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
     }
-    .card:nth-child(1) { animation-delay: 0.1s; }
-    .card:nth-child(2) { animation-delay: 0.25s; }
-    .card:nth-child(3) { animation-delay: 0.4s; }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.15s; }
+    .card:nth-child(3) { animation-delay: 0.25s; }
+
     .tag-recomendado {
-      position: absolute; top: -10px; right: 16px;
+      position: absolute; top: -11px; left: 20px;
       background: linear-gradient(135deg, #00C853, #00a846);
-      color: #fff; font-size: 10px; font-weight: 800;
-      padding: 3px 12px; border-radius: 99px; letter-spacing: 1.5px;
+      color: #fff; font-size: 9px; font-weight: 800;
+      padding: 3px 12px; border-radius: 99px;
+      letter-spacing: 1.5px; font-family: 'Syne', sans-serif;
     }
-    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-    .loja-nome { color: #888; font-size: 12px; font-weight: 600; letter-spacing: 1px; }
-    .produto-nome { color: #eee; font-size: 14px; font-weight: 600; line-height: 1.4; margin-top: 4px; }
-    .preco { color: #fff; font-size: 18px; font-weight: 800; text-align: right; }
-    .preco-max { color: #555; font-size: 11px; }
-    .stars { display: flex; gap: 2px; margin-bottom: 12px; }
-    .star { font-size: 12px; }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+
+    .loja-nome {
+      color: #555; font-size: 10px; font-weight: 700;
+      letter-spacing: 1.5px; font-family: 'Syne', sans-serif;
+      margin-bottom: 5px;
+    }
+
+    .produto-nome {
+      color: #ddd; font-size: 13px; font-weight: 500; line-height: 1.4;
+    }
+
+    .preco-wrap { text-align: right; flex-shrink: 0; }
+    .preco { color: #fff; font-size: 20px; font-weight: 800; font-family: 'Syne', sans-serif; }
+    .preco-max { color: #383838; font-size: 11px; margin-top: 2px; }
+
+    .stars-row {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .stars { display: flex; gap: 2px; }
+    .star { font-size: 11px; }
+
     .nivel-badge {
-      font-size: 10px; font-weight: 700; padding: 2px 8px;
-      border-radius: 99px; letter-spacing: 1px; margin-left: 8px;
+      font-size: 9px; font-weight: 800; padding: 2px 8px;
+      border-radius: 99px; letter-spacing: 1px;
+      font-family: 'Syne', sans-serif;
     }
-    .nota { color: #555; font-size: 11px; margin-left: 8px; }
-    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+
+    .nota { color: #383838; font-size: 11px; }
+
+    .tags {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
+    }
+
     .tag {
-      background: #1a1a1a; color: #888; font-size: 11px;
-      padding: 3px 10px; border-radius: 99px;
+      background: #161616; color: #555; font-size: 11px;
+      padding: 4px 10px; border-radius: 8px; border: 1px solid #1e1e1e;
     }
-    .motivo { color: #666; font-size: 12px; margin-bottom: 14px; line-height: 1.4; }
+
+    .motivo {
+      color: #444; font-size: 12px; margin-bottom: 16px;
+      line-height: 1.5; border-top: 1px solid #161616;
+      padding-top: 12px;
+    }
+
     .btn-comprar {
-      width: 100%; padding: 11px; border-radius: 10px;
-      border: 1px solid #2a2a2a; background: #1a1a1a;
-      color: #888; font-size: 13px; font-weight: 700;
+      width: 100%; padding: 12px; border-radius: 12px;
+      border: 1px solid #222; background: #161616;
+      color: #555; font-size: 12px; font-weight: 700;
       cursor: pointer; font-family: 'Syne', sans-serif;
       letter-spacing: 0.5px; transition: all 0.2s;
     }
+
+    .btn-comprar:hover { border-color: #333; color: #888; }
+
     .btn-comprar.destaque {
       background: linear-gradient(135deg, #00C853, #00a846);
       border: none; color: #fff;
     }
+
+    .btn-comprar.destaque:hover { opacity: 0.9; }
+
+    /* DICA */
     .dica {
-      background: #0a0f0a; border: 1px solid #00C85322;
-      border-radius: 14px; padding: 16px; margin-top: 8px;
+      background: #0a0f0a; border: 1px solid #00C85222;
+      border-radius: 16px; padding: 18px 20px; margin-top: 4px;
     }
-    .dica-titulo { color: #00C853; font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
-    .dica-texto { color: #666; font-size: 13px; line-height: 1.5; }
+
+    .dica-titulo {
+      color: #00C853; font-size: 11px; font-weight: 800;
+      letter-spacing: 1.5px; margin-bottom: 8px;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .dica-texto { color: #555; font-size: 13px; line-height: 1.6; }
+
     .btn-nova {
-      width: 100%; margin-top: 16px; padding: 13px;
-      background: none; border: 1px solid #1e1e1e;
-      border-radius: 12px; color: #444; font-size: 13px;
-      cursor: pointer; font-family: 'Syne', sans-serif;
+      width: 100%; margin-top: 16px; padding: 14px;
+      background: none; border: 1px solid #1a1a1a;
+      border-radius: 12px; color: #333; font-size: 13px;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s, color 0.2s;
     }
-    .loading { text-align: center; padding: 40px; }
-    .loading-icon { font-size: 32px; margin-bottom: 12px; }
-    .loading-text { color: #444; font-size: 14px; }
-    .erro { color: #FF4444; font-size: 14px; text-align: center; margin: 16px 0; }
-    .stars-row { display: flex; align-items: center; margin-bottom: 12px; }
+
+    .btn-nova:hover { border-color: #2a2a2a; color: #555; }
+
+    /* LOADING */
+    .loading {
+      text-align: center; padding: 60px 0;
+      width: 100%; max-width: var(--max-width);
+    }
+
+    .loading-ring {
+      width: 40px; height: 40px;
+      border: 2px solid #1a1a1a;
+      border-top-color: #00C853;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text { color: #333; font-size: 13px; }
+
+    .erro {
+      color: #FF4444; font-size: 14px;
+      text-align: center; margin: 16px 0;
+      width: 100%; max-width: var(--max-width);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      body { padding: 32px 16px 80px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 28px; }
+    }
+
+    @media (min-width: 860px) {
+      .cards-grid { grid-template-columns: repeat(3, 1fr); }
+    }
   </style>
 </head>
 <body>
 
-  <div class="badge">🛡️ COMPRA SEGURA</div>
-  <h1>Compra mais barato.<br><span>Sem levar golpe.</span></h1>
-  <p class="subtitle">Comparamos AliExpress, Mercado Livre e Amazon por ti</p>
-
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Ex: iPhone 16, tênis Nike, perfume..." />
-    <button class="search-btn" id="searchBtn" onclick="pesquisar()">Pesquisar</button>
+  <div class="hero">
+    <div class="badge">🛡️ COMPRA SEGURA</div>
+    <h1>Compra mais barato.<br><span>Sem levar golpe.</span></h1>
+    <p class="subtitle">Comparamos AliExpress, Mercado Livre e Amazon por ti</p>
   </div>
 
-  <div class="populares" id="populares">
-    <span>Popular:</span>
-    <button class="pop-btn" onclick="setQuery('iPhone 16')">iPhone 16</button>
-    <button class="pop-btn" onclick="setQuery('AirPods Pro')">AirPods Pro</button>
-    <button class="pop-btn" onclick="setQuery('Tênis Nike')">Tênis Nike</button>
-    <button class="pop-btn" onclick="setQuery('Smart TV 50')">Smart TV 50"</button>
-    <button class="pop-btn" onclick="setQuery('Perfume importado')">Perfume importado</button>
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Ex: iPhone 16, tênis Nike, perfume..." />
+      <button class="search-btn" id="searchBtn" onclick="pesquisar()">Pesquisar</button>
+    </div>
+    <div class="populares" id="populares">
+      <span>Popular:</span>
+      <button class="pop-btn" onclick="setQuery('iPhone 16')">iPhone 16</button>
+      <button class="pop-btn" onclick="setQuery('AirPods Pro')">AirPods Pro</button>
+      <button class="pop-btn" onclick="setQuery('Tênis Nike')">Tênis Nike</button>
+      <button class="pop-btn" onclick="setQuery('Smart TV 50')">Smart TV 50"</button>
+      <button class="pop-btn" onclick="setQuery('Perfume importado')">Perfume importado</button>
+    </div>
   </div>
 
   <div id="erro" class="erro" style="display:none"></div>
+
   <div id="loading" class="loading" style="display:none">
-    <div class="loading-icon">🔍</div>
+    <div class="loading-ring"></div>
     <div class="loading-text" id="loadingText">A comparar preços e segurança...</div>
   </div>
+
   <div id="resultados" class="resultados" style="display:none"></div>
 
   <script>
@@ -173,18 +376,18 @@ Sempre 3 resultados. Preços em reais brasileiros realistas. Só um destaque:tru
     };
     const lojaIcones = { "AliExpress": "🛒", "Mercado Livre": "🛍️", "Amazon": "📦" };
 
-    let dots = 0;
     let dotsInterval;
 
     function setQuery(q) {
       document.getElementById('searchInput').value = q;
+      document.getElementById('searchInput').focus();
     }
 
     function stars(nota) {
       const s = Math.round(nota / 2);
       let h = '';
       for (let i = 1; i <= 5; i++) {
-        h += `<span class="star" style="color:${i<=s?'#FFB800':'#333'}">★</span>`;
+        h += `<span class="star" style="color:${i<=s?'#FFB800':'#222'}">★</span>`;
       }
       return h;
     }
@@ -199,6 +402,7 @@ Sempre 3 resultados. Preços em reais brasileiros realistas. Só um destaque:tru
       document.getElementById('loading').style.display = 'block';
       document.getElementById('searchBtn').disabled = true;
 
+      let dots = 0;
       dotsInterval = setInterval(() => {
         dots = (dots + 1) % 4;
         document.getElementById('loadingText').textContent = 'A comparar preços e segurança' + '.'.repeat(dots);
@@ -243,20 +447,23 @@ Sempre 3 resultados. Preços em reais brasileiros realistas. Só um destaque:tru
     }
 
     function renderResultados(d) {
-      const cor = nivelCores;
-      let html = `<div class="produto-titulo">${d.produto}</div>`;
-      html += `<div class="produto-resumo">${d.resumo}</div>`;
+      let html = `<div class="produto-header">
+        <div class="produto-titulo">${d.produto}</div>
+        <div class="produto-resumo">${d.resumo}</div>
+      </div>`;
+
+      html += `<div class="cards-grid">`;
 
       d.resultados.forEach(item => {
-        const c = cor[item.nivel] || cor.CUIDADO;
+        const c = nivelCores[item.nivel] || nivelCores.CUIDADO;
         html += `<div class="card ${item.destaque ? 'destaque' : ''}">`;
-        if (item.destaque) html += `<div class="tag-recomendado">MAIS RECOMENDADO</div>`;
-        html += `<div class="card-header">
+        if (item.destaque) html += `<div class="tag-recomendado">✦ RECOMENDADO</div>`;
+        html += `<div class="card-top">
           <div>
-            <div class="loja-nome">${lojaIcones[item.loja] || '🛒'} ${item.loja}</div>
+            <div class="loja-nome">${lojaIcones[item.loja] || '🛒'} ${item.loja.toUpperCase()}</div>
             <div class="produto-nome">${item.titulo}</div>
           </div>
-          <div>
+          <div class="preco-wrap">
             <div class="preco">R$${item.preco_min}</div>
             ${item.preco_max > item.preco_min ? `<div class="preco-max">até R$${item.preco_max}</div>` : ''}
           </div>
@@ -272,10 +479,12 @@ Sempre 3 resultados. Preços em reais brasileiros realistas. Só um destaque:tru
         </div>`;
         html += `<div class="motivo">${item.motivo}</div>`;
         html += `<button class="btn-comprar ${item.destaque ? 'destaque' : ''}" onclick="comprar('${item.loja}', '${item.titulo.replace(/'/g, "\\'")}')">
-          ${item.destaque ? '✅ Comprar com Segurança' : 'Ver Produto'}
+          ${item.destaque ? '✅ Comprar com Segurança' : '→ Ver Produto'}
         </button>`;
         html += `</div>`;
       });
+
+      html += `</div>`;
 
       if (d.dica) {
         html += `<div class="dica">
@@ -284,7 +493,7 @@ Sempre 3 resultados. Preços em reais brasileiros realistas. Só um destaque:tru
         </div>`;
       }
 
-      html += `<button class="btn-nova" onclick="novaP()">Nova pesquisa</button>`;
+      html += `<button class="btn-nova" onclick="novaP()">← Nova pesquisa</button>`;
 
       const r = document.getElementById('resultados');
       r.innerHTML = html;
@@ -295,6 +504,7 @@ Sempre 3 resultados. Preços em reais brasileiros realistas. Só um destaque:tru
       document.getElementById('resultados').style.display = 'none';
       document.getElementById('populares').style.display = 'flex';
       document.getElementById('searchInput').value = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     document.getElementById('searchInput').addEventListener('keydown', e => {
