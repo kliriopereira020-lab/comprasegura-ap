@@ -1,7 +1,10 @@
 {
   "name": "avares-api",
   "version": "1.0.0",
+  "description": "API para busca de produtos AliExpress",
+  "main": "index.js",
   "dependencies": {
-    "axios": "^1.6.0"
+    "axios": "^1.6.0",
+    "crypto": "^1.0.1"
   }
 }
